@@ -9,6 +9,10 @@ services:
       - GEOSERVER_CSRF_WHITELIST=wms.lightning.${APPDOMAIN:-local}
       - GEOSERVER_WMS_TITLE=Meteo.FI Lightning WMS
       - GEOSERVER_WORKSPACE=lightning
+      - GEOSERVER_DATASTORE_DB=lightning
+      - GEOSERVER_DATASTORE_DB_USER=${DB_USER:-geoserver}
+      - GEOSERVER_DATASTORE_DB_PASSWORD=${DB_PASSWORD:-geoserver}
+      - GEOSERVER_DATASTORE_DB_HOST=geoserver-lightning-db
     labels:
       - "traefik.http.routers.geoserver-lightning.entrypoints=websecure"
       - "traefik.http.routers.geoserver-lightning.rule=Host(`wms.lightning.${APPDOMAIN:-local}`)"
@@ -18,7 +22,7 @@ services:
     networks:
       - traefik-network
 
-  geoserver-flash-db:
+  geoserver-lightning-db:
     image: postgis/postgis
     container_name: geoserver-lightning-db
     restart: unless-stopped
@@ -36,3 +40,4 @@ volumes:
 networks:
     traefik-network:
       external: true
+      
