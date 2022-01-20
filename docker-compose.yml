@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  geoserver-lightning:
+    image: meteofi/geoserver:2.20
+    container_name: geoserver-lightning
+    restart: unless-stopped
+    environment:
+      - GEOSERVER_CSRF_WHITELIST=wms.lightning.${APPDOMAIN:-local}
+      - GEOSERVER_WMS_TITLE=Meteo.FI Lightning WMS
+      - GEOSERVER_WORKSPACE=lightning
+    labels:
+      - "traefik.http.routers.geoserver-lightning.entrypoints=websecure"
+      - "traefik.http.routers.geoserver-lightning.rule=Host(`wms.lightning.${APPDOMAIN:-local}`)"
+      - "traefik.http.services.geoserver-lightning.loadbalancer.server.port=8080"
+    volumes:
+      - geoserver-lightning-storage:/data/geoserver
+    networks:
+      - traefik-network
+
+  geoserver-flash-db:
+    image: postgis/postgis
+    container_name: geoserver-lightning-db
+    restart: unless-stopped
+    environment:
+        POSTGRES_DB: lightning
+        POSTGRES_USER: ${DB_USER:-geoserver}
+        POSTGRES_PASSWORD: ${DB_PASSWORD:-geoserver}
+    volumes:
+      - geoserver-lightning-db-storage:/var/lib/postgresql/data
+
+volumes:
+  geoserver-lightning-storage:
+  geoserver-lightning-db-storage:
+
+networks:
+    traefik-network:
+      external: true
