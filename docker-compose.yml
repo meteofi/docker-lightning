@@ -23,7 +23,7 @@ services:
       - traefik-network
 
   geoserver-lightning-db:
-    image: postgis/postgis
+    image: postgis/postgis:12-master
     container_name: geoserver-lightning-db
     restart: unless-stopped
     environment:
