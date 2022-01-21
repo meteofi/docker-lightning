@@ -32,6 +32,8 @@ services:
         POSTGRES_PASSWORD: ${DB_PASSWORD:-geoserver}
     volumes:
       - geoserver-lightning-db-storage:/var/lib/postgresql/data
+    networks:
+      - traefik-network
 
 volumes:
   geoserver-lightning-storage:
