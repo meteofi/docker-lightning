@@ -15,7 +15,7 @@ services:
         GEOSERVER_DATASTORE_DB_HOST: geoserver-lightning-db
     labels:
       - "traefik.http.routers.geoserver-lightning.entrypoints=websecure"
-      - "traefik.http.routers.geoserver-lightning.rule=Host(`wms.lightning.${APPDOMAIN:-local}`)"
+      - "traefik.http.routers.geoserver-lightning.rule=Host(`lightning.${APPDOMAIN:-local}`)"
       - "traefik.http.services.geoserver-lightning.loadbalancer.server.port=8080"
     volumes:
       - geoserver-lightning-storage:/data/geoserver
